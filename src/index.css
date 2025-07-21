@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Minimalist Perplexity-inspired palette */
+  --void-black: #000000;
+  --charcoal-prime: #0A0A0A;
+  --slate-depth: #0F0F0F;
+  --steel-frame: #1A1A1A;
+  --platinum-text: #FFFFFF;
+  --silver-muted: #666666;
+  --subtle-accent: #333333;
+  --minimal-border: rgba(255, 255, 255, 0.05);
+  --hover-border: rgba(255, 255, 255, 0.08);
+  --gradient-start: rgba(255, 255, 255, 0.02);
+  --gradient-end: rgba(255, 255, 255, 0.01);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(180deg, #000000 0%, #0A0A0A 100%);
+  color: var(--platinum-text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Minimal animations */
+.minimal-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.minimal-card:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+}
+
+.subtle-glow {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+/* Minimal grid system for 5-zone layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 32px 80px 1fr 120px;
+  height: 100vh;
+  gap: 0;
+  background: linear-gradient(180deg, #000000 0%, #0A0A0A 100%);
+}
+
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 3fr 6fr 3fr;
+  gap: 0;
+  background: transparent;
+}
+
+@media (max-width: 768px) {
+  .main-content-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+}
