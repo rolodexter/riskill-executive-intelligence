@@ -179,8 +179,19 @@ const RiskillEnterpriseDashboard: React.FC = () => {
 
   // Opportunities widget state
   const [currentOpportunity, setCurrentOpportunity] = useState(0)
+  const [isGeneratingOpportunity, setIsGeneratingOpportunity] = useState(false)
+  const [opportunityTypewriterText, setOpportunityTypewriterText] = useState('')
+  const [showOpportunityMetrics, setShowOpportunityMetrics] = useState(false)
+  const [opportunityAnimationPhase, setOpportunityAnimationPhase] = useState<'thinking' | 'typing' | 'revealing' | 'complete'>('complete')
   const [opportunityUpdateCounter, setOpportunityUpdateCounter] = useState(0)
   const [isAiSynthesizing, setIsAiSynthesizing] = useState(false)
+
+  // Initialize opportunity animations on component mount
+  useEffect(() => {
+    // Set initial state to show metrics for the first opportunity
+    setOpportunityTypewriterText(opportunities[0].summary)
+    setShowOpportunityMetrics(true)
+  }, [])
   
   const opportunities = [
     {
@@ -394,6 +405,41 @@ const RiskillEnterpriseDashboard: React.FC = () => {
     setTimeout(() => {
       setKpiAutoScrollPaused(prev => ({ ...prev, [widgetId]: false }))
     }, 3000) // Resume after 3 seconds of no interaction
+  }
+
+  // Typewriter effect for opportunities
+  const startOpportunityGeneration = (opportunityIndex: number) => {
+    setOpportunityAnimationPhase('thinking')
+    setIsGeneratingOpportunity(true)
+    setOpportunityTypewriterText('')
+    setShowOpportunityMetrics(false)
+    
+    // Thinking phase (1.5 seconds)
+    setTimeout(() => {
+      setOpportunityAnimationPhase('typing')
+      const fullText = opportunities[opportunityIndex].summary
+      let currentIndex = 0
+      
+      // Typewriter effect
+      const typeInterval = setInterval(() => {
+        if (currentIndex <= fullText.length) {
+          setOpportunityTypewriterText(fullText.slice(0, currentIndex))
+          currentIndex++
+        } else {
+          clearInterval(typeInterval)
+          setOpportunityAnimationPhase('revealing')
+          
+          // Reveal metrics after typing completes
+          setTimeout(() => {
+            setShowOpportunityMetrics(true)
+            setTimeout(() => {
+              setOpportunityAnimationPhase('complete')
+              setIsGeneratingOpportunity(false)
+            }, 800) // Wait for metrics animation
+          }, 300)
+        }
+      }, 30) // 30ms per character for realistic typing speed
+    }, 1500)
   }
 
   // Anomalies widget functions
@@ -1568,38 +1614,129 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                   ? (currentOpportunity + 1) % opportunities.length
                   : (currentOpportunity - 1 + opportunities.length) % opportunities.length
                 setCurrentOpportunity(newIndex)
+                startOpportunityGeneration(newIndex)
               }}
             >
               {/* Opportunity Title */}
               <div className="space-y-2">
-                <div className="text-white/90 text-lg font-semibold leading-tight">
+                <motion.div 
+                  className="text-white/90 text-lg font-semibold leading-tight"
+                  key={`title-${currentOpportunity}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
                   {opportunities[currentOpportunity].title}
-                </div>
-                <div className="w-12 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
+                </motion.div>
+                <motion.div 
+                  className="w-12 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: 48 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                ></motion.div>
               </div>
 
-              {/* Summary Card */}
-              <div className="bg-gradient-to-br from-purple-500/15 to-pink-500/10 border border-purple-500/25 rounded-lg p-4 backdrop-blur-sm">
-                <div className="text-white/85 text-sm leading-relaxed">
-                  {opportunities[currentOpportunity].summary}
-                </div>
-              </div>
+              {/* AI Generation Status */}
+              {opportunityAnimationPhase === 'thinking' && (
+                <motion.div 
+                  className="bg-gradient-to-br from-purple-500/15 to-pink-500/10 border border-purple-500/25 rounded-lg p-4 backdrop-blur-sm"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                    <div className="text-white/70 text-sm italic">
+                      AI is analyzing opportunity patterns...
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Summary Card with Typewriter Effect */}
+              {(opportunityAnimationPhase === 'typing' || opportunityAnimationPhase === 'revealing' || opportunityAnimationPhase === 'complete') && (
+                <motion.div 
+                  className="bg-gradient-to-br from-purple-500/15 to-pink-500/10 border border-purple-500/25 rounded-lg p-4 backdrop-blur-sm"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="text-white/85 text-sm leading-relaxed">
+                    {opportunityAnimationPhase === 'typing' ? (
+                      <span>
+                        {opportunityTypewriterText}
+                        <span className="inline-block w-2 h-4 bg-purple-400 ml-1 animate-pulse"></span>
+                      </span>
+                    ) : (
+                      opportunities[currentOpportunity].summary
+                    )}
+                  </div>
+                </motion.div>
+              )}
 
               {/* Impact & Confidence Grid */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
-                  <div className="text-emerald-400/70 text-xs font-medium mb-1">Potential Impact</div>
-                  <div className="text-emerald-400 text-sm font-semibold">
-                    {opportunities[currentOpportunity].impact}
-                  </div>
-                </div>
-                <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
-                  <div className="text-purple-400/70 text-xs font-medium mb-1">Confidence</div>
-                  <div className="text-purple-400 text-sm font-semibold">
-                    {opportunities[currentOpportunity].confidence}%
-                  </div>
-                </div>
-              </div>
+              <AnimatePresence>
+                {showOpportunityMetrics && (
+                  <motion.div 
+                    className="grid grid-cols-2 gap-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                  >
+                    <motion.div 
+                      className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.1 }}
+                    >
+                      <motion.div 
+                        className="text-emerald-400/70 text-xs font-medium mb-1"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 0.3 }}
+                      >
+                        Potential Impact
+                      </motion.div>
+                      <motion.div 
+                        className="text-emerald-400 text-sm font-semibold"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.5 }}
+                      >
+                        {opportunities[currentOpportunity].impact}
+                      </motion.div>
+                    </motion.div>
+                    <motion.div 
+                      className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-3"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.2 }}
+                    >
+                      <motion.div 
+                        className="text-purple-400/70 text-xs font-medium mb-1"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 0.4 }}
+                      >
+                        Confidence
+                      </motion.div>
+                      <motion.div 
+                        className="text-purple-400 text-sm font-semibold"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.6 }}
+                      >
+                        {opportunities[currentOpportunity].confidence}%
+                      </motion.div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Navigation Footer */}
