@@ -192,6 +192,40 @@ const RiskillEnterpriseDashboard: React.FC = () => {
     setOpportunityTypewriterText(opportunities[0].summary)
     setShowOpportunityMetrics(true)
   }, [])
+
+  // Demo sequence state
+  const [isDemoSequenceActive, setIsDemoSequenceActive] = useState(false)
+  const [showResponseModal, setShowResponseModal] = useState(false)
+  const [isExecutingEmailTask, setIsExecutingEmailTask] = useState(false)
+  const [emailTaskStatus, setEmailTaskStatus] = useState('')
+  const [emailTaskProgress, setEmailTaskProgress] = useState(0)
+
+  // Demo sequence trigger detection
+  useEffect(() => {
+    // Check if Coordination widget is showing EMAILS card (index 1)
+    const coordinationIndex = 1 // Coordination is the second KPI stack
+    const currentCoordinationCard = currentKpiCards[coordinationIndex]
+    
+    if (currentCoordinationCard === 1 && !isDemoSequenceActive && !isExecutingEmailTask) {
+      // EMAILS card is showing, trigger demo sequence
+      setTimeout(() => {
+        setIsDemoSequenceActive(true)
+        // Update Strategy Narrative Center with email-specific insight
+        setCurrentNarrative(0) // Use first narrative slot for demo
+        setTimeout(() => {
+          setShowResponseModal(true)
+        }, 2000) // Show response modal after 2 seconds
+      }, 1000) // Small delay to let the card animation complete
+    }
+  }, [currentKpiCards, isDemoSequenceActive, isExecutingEmailTask])
+
+  // Get current narrative (demo or regular)
+  const getCurrentNarrative = () => {
+    if (isDemoSequenceActive) {
+      return demoEmailNarrative
+    }
+    return narrativeInsights[currentNarrative]
+  }
   
   const opportunities = [
     {
@@ -229,6 +263,21 @@ const RiskillEnterpriseDashboard: React.FC = () => {
   const [narrativeUpdateCounter, setNarrativeUpdateCounter] = useState(0)
   const [isAdamThinking, setIsAdamThinking] = useState(false)
   
+  // Demo narrative insight for email sequence
+  const demoEmailNarrative = {
+    id: 0,
+    priority: 'action',
+    taskTitle: 'EMEA Prospect Follow-up Opportunity',
+    taskSubtitle: 'High-value prospects need immediate attention',
+    message: "Joe, I noticed you're reviewing emails. I've been tracking your EMEA prospect pipeline and there's an urgent opportunity here...",
+    details: "12 high-value prospects from last week's demo haven't received follow-up emails yet. Their engagement window is closing fast.",
+    context: "Based on historical data, prospects who don't receive follow-up within 5 days have 73% lower conversion rates. We're at day 4.",
+    recommendation: "I can send personalized follow-up emails to all 12 prospects right now. Each email will be customized based on their demo interactions and company profile.",
+    actions: ['Send follow-up emails', 'Review draft first', 'Show prospect details'],
+    confidence: 96,
+    sources: ['HubSpot', 'Demo Analytics', 'Email Engagement', 'Conversion Data']
+  }
+
   const narrativeInsights = [
     {
       id: 1,
@@ -440,6 +489,80 @@ const RiskillEnterpriseDashboard: React.FC = () => {
         }
       }, 30) // 30ms per character for realistic typing speed
     }, 1500)
+  }
+
+  // Demo sequence response handlers
+  const handleDemoResponse = (response: 'go-ahead' | 'hold-off' | 'chat') => {
+    setShowResponseModal(false)
+    
+    if (response === 'go-ahead') {
+      startEmailTaskExecution()
+    } else if (response === 'hold-off') {
+      // Reset demo sequence
+      setIsDemoSequenceActive(false)
+    } else if (response === 'chat') {
+      // For now, just reset - could expand to show chat interface
+      setIsDemoSequenceActive(false)
+    }
+  }
+
+  // Email task execution with status animations
+  const startEmailTaskExecution = () => {
+    setIsExecutingEmailTask(true)
+    setEmailTaskProgress(0)
+    
+    const statusSequence = [
+      { status: '🔄 Accessing delegated inbox...', duration: 2000, progress: 10 },
+      { status: '📝 Drafting emails to EMEA prospects...', duration: 3000, progress: 25 },
+      { status: '🤔 Reviewing drafts for tone and accuracy...', duration: 2500, progress: 45 },
+      { status: '💭 Analyzing recipient engagement patterns...', duration: 2000, progress: 60 },
+      { status: '✏️ Personalizing content for each prospect...', duration: 3000, progress: 75 },
+      { status: '📧 Sending emails to 12 prospects...', duration: 2500, progress: 90 },
+      { status: '📋 Logging tasks in CRM...', duration: 1500, progress: 95 },
+      { status: '✅ Follow-up emails sent successfully', duration: 2000, progress: 100 }
+    ]
+    
+    let currentStep = 0
+    
+    const executeStep = () => {
+      if (currentStep < statusSequence.length) {
+        const step = statusSequence[currentStep]
+        setEmailTaskStatus(step.status)
+        setEmailTaskProgress(step.progress)
+        
+        // Update Adam's activity stream
+        const currentTime = new Date()
+        const timeString = `${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}`
+        
+        setAdamActivities(prevActivities => {
+          const updatedActivities = [...prevActivities]
+          updatedActivities[0] = {
+            id: Date.now(),
+            time: timeString,
+            action: step.status,
+            status: currentStep === statusSequence.length - 1 ? 'completed' : 'active',
+            platform: 'email'
+          }
+          return updatedActivities
+        })
+        
+        currentStep++
+        
+        if (currentStep < statusSequence.length) {
+          setTimeout(executeStep, step.duration)
+        } else {
+          // Task completed
+          setTimeout(() => {
+            setIsExecutingEmailTask(false)
+            setIsDemoSequenceActive(false)
+            setEmailTaskStatus('')
+            setEmailTaskProgress(0)
+          }, step.duration)
+        }
+      }
+    }
+    
+    executeStep()
   }
 
   // Anomalies widget functions
@@ -1184,8 +1307,8 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                 <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
               </div>
               <div>
-                <div className="text-white/90 text-lg font-semibold">{narrativeInsights[currentNarrative].taskTitle}</div>
-                <div className="text-white/50 text-sm">{narrativeInsights[currentNarrative].taskSubtitle}</div>
+                <div className="text-white/90 text-lg font-semibold">{getCurrentNarrative().taskTitle}</div>
+                <div className="text-white/50 text-sm">{getCurrentNarrative().taskSubtitle}</div>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -1221,29 +1344,29 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                     <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
                       <div className="text-white/90 text-base leading-relaxed">
-                        {narrativeInsights[currentNarrative].message}
+                        {getCurrentNarrative().message}
                       </div>
                     </div>
                   </div>
                   
                   <div className="ml-5 space-y-3">
                     <div className="text-white/70 text-sm leading-relaxed">
-                      {narrativeInsights[currentNarrative].details}
+                      {getCurrentNarrative().details}
                     </div>
                     
                     <div className="text-white/60 text-sm leading-relaxed">
-                      {narrativeInsights[currentNarrative].context}
+                      {getCurrentNarrative().context}
                     </div>
                     
                     <div className="text-white/80 text-sm font-medium leading-relaxed">
-                      {narrativeInsights[currentNarrative].recommendation}
+                      {getCurrentNarrative().recommendation}
                     </div>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="ml-5 flex flex-wrap gap-2">
-                  {narrativeInsights[currentNarrative].actions.map((action, index) => (
+                  {getCurrentNarrative().actions.map((action, index) => (
                     <motion.button
                       key={action}
                       onClick={() => handleNarrativeAction(action)}
@@ -1275,14 +1398,14 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                         <div className="text-white/40 text-xs">Confidence:</div>
                         <div className="flex items-center space-x-1">
                           <div className={`text-xs font-semibold ${
-                            narrativeInsights[currentNarrative].confidence >= 90 ? 'text-emerald-400' :
-                            narrativeInsights[currentNarrative].confidence >= 80 ? 'text-blue-400' : 'text-amber-400'
+                            getCurrentNarrative().confidence >= 90 ? 'text-emerald-400' :
+                            getCurrentNarrative().confidence >= 80 ? 'text-blue-400' : 'text-amber-400'
                           }`}>
-                            {narrativeInsights[currentNarrative].confidence}%
+                            {getCurrentNarrative().confidence}%
                           </div>
                           <div className={`text-xs ${
-                            narrativeInsights[currentNarrative].confidence >= 90 ? 'text-emerald-400' :
-                            narrativeInsights[currentNarrative].confidence >= 80 ? 'text-blue-400' : 'text-amber-400'
+                            getCurrentNarrative().confidence >= 90 ? 'text-emerald-400' :
+                            getCurrentNarrative().confidence >= 80 ? 'text-blue-400' : 'text-amber-400'
                           }`}>
                             (High)
                           </div>
@@ -1292,24 +1415,25 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                       <div className="flex items-center space-x-2">
                         <div className="text-white/40 text-xs">Sources:</div>
                         <div className="text-white/60 text-xs">
-                          {narrativeInsights[currentNarrative].sources.length} data sources
+                          {getCurrentNarrative().sources.length} data sources
                         </div>
                       </div>
                     </div>
                     
                     <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      narrativeInsights[currentNarrative].priority === 'high' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                      narrativeInsights[currentNarrative].priority === 'medium' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
-                      narrativeInsights[currentNarrative].priority === 'insight' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
+                      getCurrentNarrative().priority === 'high' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                      getCurrentNarrative().priority === 'medium' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                      getCurrentNarrative().priority === 'insight' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
+                      getCurrentNarrative().priority === 'action' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
                       'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                     }`}>
-                      {narrativeInsights[currentNarrative].priority.toUpperCase()}
+                      {getCurrentNarrative().priority.toUpperCase()}
                     </div>
                   </div>
                   
                   {/* Data Sources */}
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {narrativeInsights[currentNarrative].sources.map((source, index) => (
+                    {getCurrentNarrative().sources.map((source, index) => (
                       <div
                         key={source}
                         className="px-2 py-1 bg-white/5 rounded text-xs text-white/50 border border-white/10"
@@ -1949,6 +2073,118 @@ const RiskillEnterpriseDashboard: React.FC = () => {
           </div>
         </motion.div>
       )}
+      
+      {/* Demo Response Modal */}
+      <AnimatePresence>
+        {showResponseModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            
+            {/* Modal */}
+            <motion.div
+              className="relative rounded-lg p-6 max-w-md w-full"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                backdropFilter: 'blur(40px) saturate(1.3)',
+                WebkitBackdropFilter: 'blur(40px) saturate(1.3)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)'
+              }}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              {/* Header */}
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
+                  <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+                </div>
+                <div>
+                  <div className="text-white/90 text-lg font-semibold">Adam Needs Your Approval</div>
+                  <div className="text-white/60 text-sm">EMEA prospect follow-up emails</div>
+                </div>
+              </div>
+              
+              {/* Message */}
+              <div className="mb-6">
+                <div className="text-white/80 text-sm leading-relaxed">
+                  I'm ready to send personalized follow-up emails to 12 high-value EMEA prospects. 
+                  Each email will be customized based on their demo interactions and company profile.
+                </div>
+              </div>
+              
+              {/* Response Options */}
+              <div className="space-y-3">
+                <motion.button
+                  onClick={() => handleDemoResponse('go-ahead')}
+                  className="w-full px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-[1.02]"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(22, 163, 74, 0.2) 100%)',
+                    border: '1px solid rgba(34, 197, 94, 0.4)',
+                    color: 'rgba(134, 239, 172, 0.9)'
+                  }}
+                  whileHover={{
+                    background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(22, 163, 74, 0.3) 100%)',
+                    borderColor: 'rgba(34, 197, 94, 0.6)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  🟢 Go ahead, Adam
+                </motion.button>
+                
+                <motion.button
+                  onClick={() => handleDemoResponse('hold-off')}
+                  className="w-full px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-[1.02]"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.2) 100%)',
+                    border: '1px solid rgba(245, 158, 11, 0.4)',
+                    color: 'rgba(253, 230, 138, 0.9)'
+                  }}
+                  whileHover={{
+                    background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.3) 100%)',
+                    borderColor: 'rgba(245, 158, 11, 0.6)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  🟡 Let's hold off
+                </motion.button>
+                
+                <motion.button
+                  onClick={() => handleDemoResponse('chat')}
+                  className="w-full px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-[1.02]"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%)',
+                    border: '1px solid rgba(59, 130, 246, 0.4)',
+                    color: 'rgba(147, 197, 253, 0.9)'
+                  }}
+                  whileHover={{
+                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(37, 99, 235, 0.3) 100%)',
+                    borderColor: 'rgba(59, 130, 246, 0.6)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  🔵 Chat with me about this
+                </motion.button>
+              </div>
+              
+              {/* Footer */}
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="text-white/50 text-xs text-center">
+                  Adam is waiting for your response...
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       </div>
     </motion.div>
   )
