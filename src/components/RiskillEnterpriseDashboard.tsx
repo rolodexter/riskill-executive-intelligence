@@ -126,6 +126,9 @@ const RiskillEnterpriseDashboard: React.FC = () => {
   const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 })
   const [hoverTimeout, setHoverTimeout] = useState<number | null>(null)
 
+  // Live Activity Stream widget state
+  const [isActivityStreamCollapsed, setIsActivityStreamCollapsed] = useState(false)
+
   // Adam AI Agent state
   const [adamUpdateCounter, setAdamUpdateCounter] = useState(0)
   
@@ -1229,41 +1232,94 @@ const RiskillEnterpriseDashboard: React.FC = () => {
             </div>
           </div>
 
-          {/* Real-time Activity Stream */}
-          <div className="flex-1">
-            <div className="text-white/70 text-xs font-medium mb-2 uppercase tracking-wide">Live Activity Stream</div>
-            <div className="space-y-1 max-h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
-              <AnimatePresence mode="popLayout">
-                {adamActivities.map((activity, index) => (
-                  <motion.div
-                    key={activity.id}
-                    className="flex items-start space-x-2 p-1.5 rounded-md hover:bg-white/5 transition-colors"
-                    initial={{ opacity: 0, height: 0, y: -20 }}
-                    animate={{ opacity: 1, height: 'auto', y: 0 }}
-                    exit={{ opacity: 0, height: 0, y: -20 }}
-                    transition={{ 
-                      duration: 0.3,
-                      delay: index === 0 ? 0 : 0,
-                      ease: "easeOut"
-                    }}
-                    layout
+          {/* Live Activity Stream - Collapsible */}
+          <AnimatePresence>
+            {!isActivityStreamCollapsed && (
+              <motion.div 
+                className="flex-1"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-white/70 text-xs font-medium uppercase tracking-wide">Live Activity Stream</div>
+                  <motion.button
+                    onClick={() => setIsActivityStreamCollapsed(true)}
+                    className="p-1 rounded hover:bg-white/10 transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    <div className="flex-shrink-0 mt-0.5">
-                      {activity.status === 'active' ? (
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
-                      ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60"></div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-white/40 text-xs mb-0.5">{activity.time}</div>
-                      <div className="text-white/70 text-xs leading-tight">{activity.action}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          </div>
+                    <svg className="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </motion.button>
+                </div>
+                <div className="space-y-1 max-h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
+                  <AnimatePresence mode="popLayout">
+                    {adamActivities.map((activity, index) => (
+                      <motion.div
+                        key={activity.id}
+                        className="flex items-start space-x-2 p-1.5 rounded-md hover:bg-white/5 transition-colors"
+                        initial={{ opacity: 0, height: 0, y: -20 }}
+                        animate={{ opacity: 1, height: 'auto', y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -20 }}
+                        transition={{ 
+                          duration: 0.3,
+                          delay: index === 0 ? 0 : 0,
+                          ease: "easeOut"
+                        }}
+                        layout
+                      >
+                        <div className="flex-shrink-0 mt-0.5">
+                          {activity.status === 'active' ? (
+                            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
+                          ) : (
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60"></div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-white/40 text-xs mb-0.5">{activity.time}</div>
+                          <div className="text-white/70 text-xs leading-tight">{activity.action}</div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          {/* Collapsed Activity Stream Indicator */}
+          <AnimatePresence>
+            {isActivityStreamCollapsed && (
+              <motion.div
+                className="flex-1 flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.button
+                  onClick={() => setIsActivityStreamCollapsed(false)}
+                  className="w-full p-3 rounded-lg border border-white/10 hover:border-white/20 transition-colors"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)'
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                    <div className="text-white/80 text-xs font-medium">Show Activity Stream</div>
+                    <svg className="w-3 h-3 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    </svg>
+                  </div>
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Status Footer */}
           <div className="mt-4 pt-3 border-t border-white/10">
