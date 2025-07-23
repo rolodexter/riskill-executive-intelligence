@@ -198,7 +198,9 @@ const RiskillEnterpriseDashboard: React.FC = () => {
               style={{
                 background: 'rgba(255, 255, 255, 0.02)',
                 backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)'
+                WebkitBackdropFilter: 'blur(12px)',
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                perspective: '1000px'
               }}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -214,10 +216,6 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                 scale: 0.98,
                 backgroundColor: "rgba(255, 255, 255, 0.03)",
                 transition: { duration: 0.1 }
-              }}
-              style={{
-                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)",
-                perspective: '1000px'
               }}
               onHoverStart={() => {}}
               onHoverEnd={() => {}}
@@ -236,7 +234,9 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                         style={{
                           background: 'rgba(255, 255, 255, 0.02)',
                           backdropFilter: 'blur(20px)',
-                          borderRadius: '8px'
+                          borderRadius: '8px',
+                          transformStyle: 'preserve-3d',
+                          backfaceVisibility: 'hidden'
                         }}
                         key={currentRevenueCard}
                         initial={{ 
@@ -260,10 +260,6 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                           type: "spring",
                           stiffness: 100,
                           damping: 20
-                        }}
-                        style={{
-                          transformStyle: 'preserve-3d',
-                          backfaceVisibility: 'hidden'
                         }}
                       >
                         <div className="text-white/50 text-[10px] font-semibold uppercase tracking-wider mb-1">
