@@ -130,7 +130,6 @@ const RiskillEnterpriseDashboard: React.FC = () => {
   const [isActivityStreamCollapsed, setIsActivityStreamCollapsed] = useState(false)
 
   // Adam AI Agent state
-  const [adamUpdateCounter, setAdamUpdateCounter] = useState(0)
   
   // KPI Auto-scroll state
   const [kpiAutoScrollPaused, setKpiAutoScrollPaused] = useState<{[key: string]: boolean}>({
@@ -154,7 +153,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
   ])
 
   // Anomalies widget state
-  const [anomalies, setAnomalies] = useState({
+  const [anomalies] = useState({
     high: [
       { id: 1, title: 'Revenue spike +47% in EMEA region', description: 'Unusual pattern detected', trend: 'up', severity: 'high', time: '2 min ago' },
       { id: 2, title: 'API response time 2.3x normal baseline', description: 'Performance degrading', trend: 'down', severity: 'high', time: '4 min ago' },
@@ -182,12 +181,12 @@ const RiskillEnterpriseDashboard: React.FC = () => {
 
   // Opportunities widget state
   const [currentOpportunity, setCurrentOpportunity] = useState(0)
-  const [isGeneratingOpportunity, setIsGeneratingOpportunity] = useState(false)
+  const [, setIsGeneratingOpportunity] = useState(false)
   const [opportunityTypewriterText, setOpportunityTypewriterText] = useState('')
   const [showOpportunityMetrics, setShowOpportunityMetrics] = useState(false)
   const [opportunityAnimationPhase, setOpportunityAnimationPhase] = useState<'thinking' | 'typing' | 'revealing' | 'complete'>('complete')
-  const [opportunityUpdateCounter, setOpportunityUpdateCounter] = useState(0)
-  const [isAiSynthesizing, setIsAiSynthesizing] = useState(false)
+  const [, setOpportunityUpdateCounter] = useState(0)
+  const [, setIsAiSynthesizing] = useState(false)
 
   // Initialize opportunity animations on component mount
   useEffect(() => {
@@ -200,8 +199,8 @@ const RiskillEnterpriseDashboard: React.FC = () => {
   const [isDemoSequenceActive, setIsDemoSequenceActive] = useState(false)
   const [showResponseModal, setShowResponseModal] = useState(false)
   const [isExecutingEmailTask, setIsExecutingEmailTask] = useState(false)
-  const [emailTaskStatus, setEmailTaskStatus] = useState('')
-  const [emailTaskProgress, setEmailTaskProgress] = useState(0)
+  const [, setEmailTaskStatus] = useState('')
+  const [, setEmailTaskProgress] = useState(0)
 
   // Demo sequence trigger detection
   useEffect(() => {
@@ -263,7 +262,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
 
   // Strategy Narrative Center state
   const [currentNarrative, setCurrentNarrative] = useState(0)
-  const [narrativeUpdateCounter, setNarrativeUpdateCounter] = useState(0)
+  const [, setNarrativeUpdateCounter] = useState(0)
   const [isAdamThinking, setIsAdamThinking] = useState(false)
   
   // Demo narrative insight for email sequence
@@ -345,7 +344,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
   // Adam AI Agent real-time animations
   useEffect(() => {
     const interval = setInterval(() => {
-      setAdamUpdateCounter(prev => prev + 1)
+      // Adam update counter removed
       
       // Simulate progress updates on tasks
       setAdamTasks(prevTasks => 
@@ -1489,7 +1488,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
                   
                   {/* Data Sources */}
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {getCurrentNarrative().sources.map((source, index) => (
+                    {getCurrentNarrative().sources.map((source) => (
                       <div
                         key={source}
                         className="px-2 py-1 bg-white/5 rounded text-xs text-white/50 border border-white/10"
