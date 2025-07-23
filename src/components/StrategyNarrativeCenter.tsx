@@ -3,15 +3,31 @@ import { motion } from 'framer-motion'
 import { MessageSquare, Send, Mic, FileText, Paperclip, Brain } from 'lucide-react'
 import { useDemoOrchestration } from '../hooks/useDemoOrchestration'
 
+interface MessageFile {
+  icon: React.ComponentType<any>
+  name: string
+  preview: string
+}
+
+interface Message {
+  id: number
+  type: 'ai' | 'user'
+  content: string
+  timestamp: string
+  files: MessageFile[]
+  metadata?: any
+}
+
 const StrategyNarrativeCenter: React.FC = () => {
   const { demoState, getCurrentStep, setTyping } = useDemoOrchestration()
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      type: 'ai' as const,
+      type: 'ai',
       content: 'Hey there! I\'m Adam, your AI assistant. I\'m here to help you navigate complex business intelligence and strategic decisions. Ready to see what we can accomplish together?',
       timestamp: '10:29 AM',
-      files: []
+      files: [],
+      metadata: undefined
     }
   ])
 
@@ -178,7 +194,7 @@ const StrategyNarrativeCenter: React.FC = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.2 + fileIndex * 0.1 }}
                     >
-                      <span className="text-lg">{file.icon}</span>
+                      <file.icon className="w-4 h-4 text-silver-muted" />
                       <div className="flex-1 min-w-0">
                         <div className="text-xs font-medium text-platinum-text truncate">
                           {file.name}

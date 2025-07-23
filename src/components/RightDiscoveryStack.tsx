@@ -104,7 +104,7 @@ const RightDiscoveryStack: React.FC = () => {
           {anomalies.map((anomaly, index) => (
             <motion.div
               key={anomaly.id}
-              className={`relative backdrop-blur-sm p-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl ${severityColors[anomaly.severity]}`}
+              className={`relative backdrop-blur-sm p-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl ${severityColors[anomaly.severity as keyof typeof severityColors]}`}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.0 + index * 0.1, duration: 0.4 }}
@@ -123,7 +123,7 @@ const RightDiscoveryStack: React.FC = () => {
                     {anomaly.description}
                   </p>
                   <div className="flex items-center justify-between mt-2">
-                    <span className={`text-xs px-2 py-1 rounded-full border ${severityColors[anomaly.severity]}`}>
+                    <span className={`text-xs px-2 py-1 rounded-full border ${severityColors[anomaly.severity as keyof typeof severityColors]}`}>
                       {anomaly.severity.toUpperCase()}
                     </span>
                     <span className="text-xs text-silver-muted">
@@ -162,7 +162,7 @@ const RightDiscoveryStack: React.FC = () => {
           {opportunities.map((opportunity, index) => (
             <motion.div
               key={opportunity.id}
-              className={`relative backdrop-blur-sm p-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl ${impactColors[opportunity.impact]}`}
+              className={`relative backdrop-blur-sm p-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl ${impactColors[opportunity.impact as keyof typeof impactColors]}`}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.2 + index * 0.1, duration: 0.4 }}
@@ -186,7 +186,7 @@ const RightDiscoveryStack: React.FC = () => {
                     {opportunity.description}
                   </p>
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs px-2 py-1 rounded-full border ${impactColors[opportunity.impact]}`}>
+                    <span className={`text-xs px-2 py-1 rounded-full border ${impactColors[opportunity.impact as keyof typeof impactColors]}`}>
                       {opportunity.impact.toUpperCase()} IMPACT
                     </span>
                     <span className="text-xs text-silver-muted">

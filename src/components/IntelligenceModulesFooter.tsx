@@ -126,7 +126,7 @@ const IntelligenceModulesFooter: React.FC = () => {
                 </p>
               </div>
               
-              <div className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColors[module.status]}`}>
+              <div className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColors[module.status as keyof typeof statusColors]}`}>
                 {module.status === 'processing' ? (
                   <div className="flex items-center space-x-1">
                     <div className="w-1 h-1 bg-current rounded-full animate-pulse"></div>

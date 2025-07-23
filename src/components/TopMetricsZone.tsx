@@ -220,11 +220,11 @@ const TopMetricsZone: React.FC = () => {
     
     return (
       <div className="flex items-end space-x-0.5 h-6 w-12">
-        {data.map((value, index) => {
+        {data.map((value) => {
           const height = ((value - min) / range) * 20 + 4
           return (
             <div
-              key={index}
+              key={value}
               className={`bg-gradient-to-t ${color} rounded-sm w-1.5`}
               style={{ height: `${height}px` }}
             />
@@ -234,7 +234,7 @@ const TopMetricsZone: React.FC = () => {
     )
   }
 
-  const StackedCard: React.FC<{ cardStack: CardStack; index: number }> = ({ cardStack, index }) => {
+  const StackedCard: React.FC<{ cardStack: CardStack; index: number }> = ({ cardStack }) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const { primary, stack } = cardStack
     const currentValue = animatedValues[cardStack.id] || primary.value
