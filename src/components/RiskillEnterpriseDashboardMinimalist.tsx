@@ -298,19 +298,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
         }))
       )
       
-      // Add new activities periodically
-      if (Math.random() > 0.7) {
-        const newActivities = [
-          { action: 'Refreshing customer sentiment analysis from social feeds', platform: 'system' },
-          { action: 'DocuSign contracts → Processed 15 signature workflows', platform: 'docusign' },
-          { action: 'QuickBooks sync → Reconciled monthly financials', platform: 'quickbooks' },
-          { action: 'Workday HR → Updated employee performance data', platform: 'workday' },
-          { action: 'Concur expenses → Flagged 8 policy violations', platform: 'concur' },
-          { action: 'Box files → Organized Q4 strategic documents', platform: 'box' }
-        ]
-        
-        // Adam activities update removed for minimalist version
-      }
+      // Activity stream functionality removed for minimalist version
     }, 3000) // Update every 3 seconds
     
     return () => clearInterval(interval)
