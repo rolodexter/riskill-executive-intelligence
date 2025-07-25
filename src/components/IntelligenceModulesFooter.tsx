@@ -71,90 +71,67 @@ const IntelligenceModulesFooter: React.FC = () => {
     }
   ]
 
-  const statusColors = {
-    active: 'bg-gradient-to-r from-emerald-500/20 to-teal-500/10 border-emerald-400/30 text-emerald-300',
-    processing: 'bg-gradient-to-r from-blue-500/20 to-cyan-500/10 border-blue-400/30 text-blue-300',
-    standby: 'bg-gradient-to-r from-slate-500/15 to-gray-500/8 border-slate-400/25 text-slate-300'
-  }
+  // Module status colors are now applied directly in the JSX
 
   return (
     <motion.div 
-      className="bg-slate-depth border-t border-steel-frame p-4 h-30"
-      initial={{ opacity: 0, y: 50 }}
+      className="w-full h-30 bg-gradient-to-r from-slate-900/40 via-gray-800/30 to-slate-900/40 backdrop-blur-md border-t border-white/[0.02] p-4 overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.7 }}
+      style={{
+        background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%)',
+        backdropFilter: 'blur(24px) saturate(1.1)',
+        WebkitBackdropFilter: 'blur(24px) saturate(1.1)',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.03)',
+        width: '100vw',
+        maxWidth: '100%'
+      }}
     >
-      <motion.div 
-        className="mb-3"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.9, duration: 0.4 }}
-      >
-        <h3 className="text-base font-semibold text-white/95 mb-2">
-          Intelligence Modules Zone
-        </h3>
-        <p className="text-sm text-white/60">
-          Enterprise AI capabilities and real-time processing status
-        </p>
-      </motion.div>
 
-      <div className="grid grid-cols-4 gap-3 lg:grid-cols-8">
+      <div className="flex w-full" style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem' }}>
         {modules.map((module, index) => (
           <motion.div
             key={module.id}
-            className="relative bg-gradient-to-br from-white/[0.04] via-white/[0.02] to-transparent backdrop-blur-sm border border-white/[0.01] hover:border-white/[0.02] rounded-xl p-4 cursor-pointer shadow-sm hover:shadow-md transition-all duration-300"
-            initial={{ opacity: 0, y: 20 }}
+            className="flex-1 rounded-md p-3"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              width: 'calc(100% / 8 - 0.66rem)'
+            }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0 + index * 0.05, duration: 0.4 }}
-            whileHover={{ scale: 1.05, y: -3 }}
-            whileTap={{ scale: 0.95 }}
+            transition={{ delay: 1.0 + index * 0.1, duration: 0.5, ease: "easeOut" }}
           >
-            {/* Subtle background pattern */}
-            <div className="absolute inset-0 opacity-[0.02] bg-gradient-to-br from-white/5 via-transparent to-transparent rounded-xl" />
-            
-            <div className="flex flex-col items-center text-center space-y-3 relative z-10">
-              <div className="p-3 bg-gradient-to-br from-white/[0.08] to-white/[0.04] backdrop-blur-sm rounded-xl border border-white/[0.01] shadow-sm">
-                <module.icon className="w-5 h-5 text-white/80" />
-              </div>
-              
-              <div className="flex-1">
-                <h4 className="text-sm font-semibold text-white/95 leading-tight mb-2">
-                  {module.name}
-                </h4>
-                <p className="text-xs text-silver-muted">
-                  {module.metrics}
-                </p>
-              </div>
-              
-              <div className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColors[module.status as keyof typeof statusColors]}`}>
-                {module.status === 'processing' ? (
-                  <div className="flex items-center space-x-1">
-                    <div className="w-1 h-1 bg-current rounded-full animate-pulse"></div>
-                    <span>PROC</span>
-                  </div>
-                ) : (
-                  module.status.toUpperCase()
-                )}
-              </div>
+            <div className="flex justify-between items-center">
+              <div className="text-white/70 text-[10px] uppercase font-medium tracking-wide">{module.id}</div>
+              <div className={`w-1.5 h-1.5 rounded-full ${
+                module.status === 'active' ? 'bg-emerald-400' :
+                module.status === 'processing' ? 'bg-blue-400 animate-pulse' : 'bg-white/40'
+              }`}></div>
             </div>
+            <div className="mt-1 text-white/90 text-xs font-light">{module.name}</div>
           </motion.div>
         ))}
       </div>
 
       {/* System Status Bar */}
       <motion.div 
-        className="mt-4 flex items-center justify-between text-xs text-silver-muted"
+        className="mt-4 flex items-center justify-between text-[10px] text-white/50"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.4 }}
       >
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
             <span>System Health: Optimal</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-indigo-400 rounded-full"></div>
+            <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
             <span>Processing: {modules.filter(m => m.status === 'processing').length} modules</span>
           </div>
         </div>
