@@ -83,24 +83,22 @@ const IntelligenceModulesFooter: React.FC = () => {
         background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 100%)',
         backdropFilter: 'blur(24px) saturate(1.1)',
         WebkitBackdropFilter: 'blur(24px) saturate(1.1)',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.03)',
-        width: '100vw',
-        maxWidth: '100%'
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.03)'
+        /* Removed width: 100vw that was causing issues */
       }}
     >
 
-      <div className="flex w-full" style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem' }}>
+      <div className="flex w-full justify-between gap-3">
         {modules.map((module, index) => (
           <motion.div
             key={module.id}
-            className="flex-1 rounded-md p-3"
+            className="flex-1 min-w-[120px] rounded-md p-3 bg-white/[0.03] border border-white/[0.08] shadow-lg"
             style={{
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-              width: 'calc(100% / 8 - 0.66rem)'
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+              /* Removed problematic width calculation */
             }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
