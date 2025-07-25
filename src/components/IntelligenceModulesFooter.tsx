@@ -128,7 +128,7 @@ const IntelligenceModulesFooter: React.FC = () => {
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
-            <span>System Health: Optimal</span>
+            <span>System Health: DEPLOYMENT TEST - UPDATED</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
