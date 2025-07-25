@@ -1,7 +1,9 @@
+// React is imported automatically in JSX transformations
 import { motion } from 'framer-motion'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import RiskillEnterpriseDashboard from './components/RiskillEnterpriseDashboard'
 import RiskillEnterpriseDashboardMinimalist from './components/RiskillEnterpriseDashboardMinimalist'
+import RiskillEnterpriseDashboardMinimalist2 from './components/RiskillEnterpriseDashboardMinimalist2'
 import RiskillEnterpriseDashboardIDP from './components/RiskillEnterpriseDashboardIDP'
 
 function App() {
@@ -16,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<RiskillEnterpriseDashboard />} />
           <Route path="/minimalist" element={<RiskillEnterpriseDashboardMinimalist />} />
+          <Route path="/minimalist2" element={<RiskillEnterpriseDashboardMinimalist2 />} />
           <Route path="/idp" element={<RiskillEnterpriseDashboardIDP />} />
         </Routes>
       </motion.div>
