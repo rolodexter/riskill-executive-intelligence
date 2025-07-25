@@ -1094,8 +1094,8 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
           onWheel={(e) => {
-            // Only intercept scroll if user is holding Shift key (indicating intentional narrative navigation)
-            if (e.shiftKey) {
+            // Only intercept scroll on desktop with Shift key (never interfere with mobile touch)
+            if (e.shiftKey && !('ontouchstart' in window)) {
               e.preventDefault()
               const delta = e.deltaY
               const direction = delta > 0 ? 1 : -1
@@ -1104,7 +1104,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                 : (currentNarrative - 1 + narrativeInsights.length) % narrativeInsights.length
               setCurrentNarrative(newIndex)
             }
-            // Otherwise allow normal page scrolling
+            // Always allow normal scrolling on mobile and when Shift is not pressed
           }}
         >
           {/* Conversational Header */}
@@ -1560,8 +1560,8 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             <div 
               className="space-y-5 cursor-pointer select-none"
               onWheel={(e) => {
-                // Only intercept scroll if user is holding Shift key (indicating intentional opportunity navigation)
-                if (e.shiftKey) {
+                // Only intercept scroll on desktop with Shift key (never interfere with mobile touch)
+                if (e.shiftKey && !('ontouchstart' in window)) {
                   e.preventDefault()
                   const delta = e.deltaY
                   const direction = delta > 0 ? 1 : -1
@@ -1571,7 +1571,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                   setCurrentOpportunity(newIndex)
                   startOpportunityGeneration(newIndex)
                 }
-                // Otherwise allow normal page scrolling
+                // Always allow normal scrolling on mobile and when Shift is not pressed
               }}
             >
               {/* Opportunity Title */}
