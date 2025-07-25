@@ -512,6 +512,11 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
   
   // Handle mouse wheel scroll for card navigation
   const handleRevenueCardScroll = (event: React.WheelEvent) => {
+    // Only intercept scroll on desktop (never interfere with mobile touch)
+    if ('ontouchstart' in window) {
+      return // Allow normal scrolling on mobile
+    }
+    
     event.preventDefault()
     
     // Exit hover overlay when scrolling
@@ -538,7 +543,12 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
 
   return (
     <motion.div 
-      className="w-full h-screen relative flex flex-col overflow-hidden"
+      className="w-full h-screen relative flex flex-col overflow-auto"
+      style={{
+        WebkitOverflowScrolling: 'touch',
+        touchAction: 'pan-y',
+        overscrollBehavior: 'contain'
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.2, ease: "easeOut" }}
@@ -558,7 +568,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
       <div className="absolute inset-0 z-10 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
       
       {/* Content Layer */}
-      <div className="relative z-20 w-full h-full flex flex-col">
+      <div className="relative z-20 w-full min-h-full flex flex-col">
       {/* Traditional Application Menu Bar */}
       <div 
         className="h-8 flex items-center px-4 border-b border-white/20"
