@@ -1007,8 +1007,8 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
         </DndContext>
       </motion.div>
 
-      {/* Spacing buffer between KPI widgets and main content */}
-      <div className="h-6" />
+      {/* Minimal spacing between KPI widgets and main content */}
+      <div className="h-2" />
 
       {/* Main Content Grid - Responsive layout */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-2 sm:p-4">
