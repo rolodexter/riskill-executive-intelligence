@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Minimalist2Footer from './Minimalist2Footer'
 import {
   DndContext,
   closestCenter,
@@ -1941,47 +1942,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Intelligence Modules Footer - 120px height */}
-      <motion.div 
-        className="h-30 bg-gradient-to-r from-slate-900/40 via-gray-800/30 to-slate-900/40 backdrop-blur-md border-t border-white/[0.02] p-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.8, ease: "easeOut" }}
-      >
-        <div className="flex space-x-4 overflow-x-auto">
-          {[
-            { name: "Risk Engine", status: "active", color: "emerald" },
-            { name: "Portfolio Analytics", status: "processing", color: "blue" },
-            { name: "Market Intelligence", status: "standby", color: "purple" },
-            { name: "Compliance Monitor", status: "active", color: "amber" },
-            { name: "Threat Detection", status: "processing", color: "rose" },
-            { name: "AI Assistant", status: "active", color: "cyan" }
-          ].map((module, index) => (
-            <motion.div
-              key={module.name}
-              className="flex-shrink-0 rounded-lg p-3 min-w-[140px]"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                backdropFilter: 'blur(24px) saturate(1.1)',
-                WebkitBackdropFilter: 'blur(24px) saturate(1.1)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.0 + index * 0.1, duration: 0.5, ease: "easeOut" }}
-            >
-              <div className="text-white/70 text-xs font-medium mb-1">{module.name}</div>
-              <div className={`text-[10px] font-semibold ${
-                module.status === 'active' ? 'text-emerald-400' :
-                module.status === 'processing' ? 'text-blue-400' : 'text-white/40'
-              }`}>
-                {module.status.toUpperCase()}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      {/* Functional Hover Overlay placeholder - no content change */}
       
       {/* Functional Hover Overlay */}
       {hoveredWidget && (
@@ -2241,6 +2202,9 @@ const RiskillEnterpriseDashboard: React.FC = () => {
         )}
       </AnimatePresence>
       </div>
+      
+      {/* Intelligence Modules Footer */}
+      <Minimalist2Footer />
     </motion.div>
   )
 }
