@@ -67,7 +67,7 @@ const Minimalist2Footer: React.FC = () => {
       transition={{ duration: 0.6, delay: 0.7 }}
     >
       <div className="flex flex-wrap justify-between gap-2">
-        {modules.map((module, index) => (
+        {modules.map((module) => (
           <div
             key={module.id}
             className="flex-1 min-w-[120px] rounded-md p-3 bg-black/50 border border-white/10"
