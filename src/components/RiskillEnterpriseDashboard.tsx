@@ -1942,8 +1942,6 @@ const RiskillEnterpriseDashboard: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Functional Hover Overlay placeholder - no content change */}
-      
       {/* Functional Hover Overlay */}
       {hoveredWidget && (
         <motion.div
@@ -2204,7 +2202,9 @@ const RiskillEnterpriseDashboard: React.FC = () => {
       </div>
       
       {/* Intelligence Modules Footer */}
-      <Minimalist2Footer />
+      <div className="fixed bottom-0 left-0 right-0 z-10">
+        <Minimalist2Footer />
+      </div>
     </motion.div>
   )
 }
