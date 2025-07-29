@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Minimalist2Footer from './Minimalist2Footer'
 import {
   DndContext,
   closestCenter,
@@ -568,10 +569,10 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
       <div className="absolute inset-0 z-10 bg-gradient-to-br from-black/60 via-black/40 to-black/60" />
       
       {/* Content Layer */}
-      <div className="relative z-20 w-full min-h-full flex flex-col">
+      <div className="relative z-20 w-full flex flex-col flex-1 min-h-0 overflow-hidden">
       {/* Traditional Application Menu Bar */}
       <div 
-        className="h-8 flex items-center px-4 border-b border-white/20"
+        className="h-8 flex items-center px-4 border-b border-white/20 sticky top-0 z-50"
         style={{
           background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.03) 100%)',
           backdropFilter: 'blur(32px) saturate(1.2)',
@@ -583,7 +584,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
           {menuItems.map((item, index) => (
             <motion.div
               key={item}
-              className="text-white/70 text-sm hover:text-white/90 cursor-pointer transition-colors duration-200"
+              className="text-white/70 text-sm  cursor-pointer transition-colors duration-200"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1, duration: 0.4, ease: "easeOut" }}
@@ -609,7 +610,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
 
       {/* Top Metrics Zone - 144px height with extra clearance */}
       <motion.div 
-        className="h-36 bg-gradient-to-r from-slate-900/30 via-gray-800/20 to-slate-900/30 backdrop-blur-md border-b border-white/[0.02] flex items-center px-3"
+        className="h-36 mb-8 bg-gradient-to-r from-slate-900/30 via-gray-800/20 to-slate-900/30 backdrop-blur-md border-b border-white/[0.02] flex items-center px-3 z-40 relative"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
@@ -775,7 +776,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                         {/* Clean Main Value Display */}
                         <div className="flex-1 flex items-center justify-between">
                           <div className="flex flex-col space-y-1">
-                            <div className="text-white text-2xl font-bold leading-none">
+                            <div className="text-white text-lg sm:text-xl md:text-xl lg:text-lg xl:text-xl 2xl:text-xl font-normal leading-none">
                               {revenueCards[currentRevenueCard].value}
                             </div>
                             <div className="flex items-center space-x-3">
@@ -887,7 +888,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                         {/* Main value display with visualization */}
                         <div className="flex-1 flex items-center justify-between">
                           <div className="flex flex-col space-y-1">
-                            <div className="text-white text-sm xs:text-base sm:text-lg md:text-xl font-bold leading-none">
+                            <div className="text-white text-sm xs:text-xs sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base font-normal leading-none">
                               {kpiCardStacks[kpi.stackIndex][currentKpiCards[kpi.stackIndex]].value}
                             </div>
                             <div className="flex items-center space-x-3">
@@ -916,7 +917,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                           <circle cx="16" cy="16" r="12" fill="none" stroke="rgb(251 146 60)" strokeWidth="4"
                             strokeDasharray={`${97.2 * 0.75} 75`} strokeLinecap="round"/>
                         </svg>
-                        <div className="absolute inset-0 flex items-center justify-center text-[8px] text-orange-400 font-bold">
+                        <div className="absolute inset-0 flex items-center justify-center text-[8px] text-orange-400 font-normal">
                           97%
                         </div>
                       </div>
@@ -925,8 +926,8 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                       <div className="flex flex-col space-y-1 w-16">
                         {/* Calendar Mini View */}
                         <div className="bg-blue-500/20 rounded p-1 text-center">
-                          <div className="text-[6px] text-blue-300 font-bold">FRI</div>
-                          <div className="text-[8px] text-white font-bold">20</div>
+                          <div className="text-[6px] text-blue-300 font-normal">FRI</div>
+                          <div className="text-[8px] text-white font-normal">20</div>
                         </div>
                         {/* Communication Indicators */}
                         <div className="flex justify-between items-center">
@@ -1011,7 +1012,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
       <div className="h-2" />
 
       {/* Main Content Grid - Responsive layout */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-2 sm:p-4">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-2 sm:p-4 min-h-0 overflow-hidden">
         {/* Left Panel - Adam AI Agent Widget (responsive columns) */}
         <motion.div 
           className="lg:col-span-2 rounded-lg p-3 sm:p-4 h-full overflow-hidden"
@@ -1032,7 +1033,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
               <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
             </div>
             <div>
-              <div className="text-white/90 text-sm font-semibold">Adam Draper</div>
+              <div className="text-white/90 text-sm font-normal">Adam Draper</div>
               <div className="text-white/50 text-xs">AI Business Analyst</div>
             </div>
             <div className="ml-auto">
@@ -1121,11 +1122,11 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
-                <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+                <div className="text-blue-400 text-sm">🤖</div>
               </div>
               <div>
-                <div className="text-white/90 text-sm xs:text-base sm:text-lg md:text-xl font-semibold">{getCurrentNarrative().taskTitle}</div>
-                <div className="text-white/50 text-[10px] xs:text-xs sm:text-sm">{getCurrentNarrative().taskSubtitle}</div>
+                <div className="text-white/90 text-sm xs:text-xs sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base sm:text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl 2xl:text-xl md:text-base sm:text-lg md:text-xl lg:text-lg xl:text-xl 2xl:text-xl font-normal">{getCurrentNarrative().taskTitle}</div>
+                <div className="text-white/50 text-[10px] xs:text-xs sm:text-xs">{getCurrentNarrative().taskSubtitle}</div>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -1160,22 +1161,22 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                   <div className="flex items-start space-x-3">
                     <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
-                      <div className="text-white/90 text-xs xs:text-sm sm:text-base md:text-lg leading-relaxed">
+                      <div className="text-white/90 text-xs sm:text-sm lg:text-base font-light leading-relaxed">
                         {getCurrentNarrative().message}
                       </div>
                     </div>
                   </div>
                   
                   <div className="ml-5 space-y-3">
-                    <div className="text-white/70 text-[10px] xs:text-xs sm:text-sm leading-relaxed">
+                    <div className="text-white/70 text-[9px] xs:text-xs sm:text-xs font-light leading-relaxed">
                       {getCurrentNarrative().details}
                     </div>
                     
-                    <div className="text-white/60 text-[10px] xs:text-xs sm:text-sm leading-relaxed">
+                    <div className="text-white/60 text-[9px] xs:text-xs sm:text-xs font-light leading-relaxed">
                       {getCurrentNarrative().context}
                     </div>
                     
-                    <div className="text-white/80 text-xs xs:text-sm sm:text-sm font-medium leading-relaxed">
+                    <div className="text-white/80 text-[10px] xs:text-xs sm:text-xs font-normal leading-relaxed">
                       {getCurrentNarrative().recommendation}
                     </div>
                   </div>
@@ -1187,7 +1188,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                     <motion.button
                       key={action}
                       onClick={() => handleNarrativeAction(action)}
-                      className="px-4 py-2 rounded-md text-xs font-medium transition-all duration-200 hover:scale-105"
+                      className="px-4 py-2 rounded-md text-xs font-medium transition-all duration-200 "
                       style={{
                         background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)',
                         border: '1px solid rgba(59, 130, 246, 0.3)',
@@ -1214,7 +1215,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                       <div className="flex items-center space-x-2">
                         <div className="text-white/40 text-xs">Confidence:</div>
                         <div className="flex items-center space-x-1">
-                          <div className={`text-xs font-semibold ${
+                          <div className={`text-xs font-normal ${
                             getCurrentNarrative().confidence >= 90 ? 'text-emerald-400' :
                             getCurrentNarrative().confidence >= 80 ? 'text-blue-400' : 'text-amber-400'
                           }`}>
@@ -1276,7 +1277,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                     key={index}
                     onClick={() => setCurrentNarrative(index)}
                     className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      index === currentNarrative ? 'bg-blue-400 scale-125' : 'bg-white/20 hover:bg-white/40'
+                      index === currentNarrative ? 'bg-blue-400 ' : 'bg-white/20 '
                     }`}
                   />
                 ))}
@@ -1286,10 +1287,10 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
         </motion.div>
 
         {/* Right Side Container - Discovery Stack */}
-        <div className="lg:col-span-3 space-y-4">
+        <div className="lg:col-span-3 flex flex-col gap-4 flex-1 min-h-0 overflow-hidden">
           {/* Anomalies Widget */}
           <motion.div 
-            className="rounded-lg p-3 sm:p-4 h-1/2 overflow-hidden"
+            className="rounded-lg p-3 sm:p-4 flex-1 min-h-0 overflow-auto max-h-[calc(50vh-32px)]"
             style={{
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
               backdropFilter: 'blur(24px) saturate(1.1)',
@@ -1310,7 +1311,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                 <div className="text-red-400 text-sm">🔍</div>
               </div>
               <div>
-                <div className="text-white/90 text-xs xs:text-sm sm:text-sm font-semibold">Anomalies Detected</div>
+                <div className="text-white/90 text-xs xs:text-sm sm:text-sm font-normal">Anomalies Detected</div>
                 <div className="text-white/50 text-[10px] xs:text-xs sm:text-xs">Real-time pattern analysis</div>
               </div>
             </div>
@@ -1330,13 +1331,13 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             <div className="space-y-2">
               <motion.button
                 onClick={() => toggleSection('high')}
-                className="w-full flex items-center justify-between p-2 rounded-md hover:bg-white/5 transition-colors"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                className="w-full flex items-center justify-between p-2 rounded-md transition-colors"
+                
+                
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 rounded-full bg-red-400/80"></div>
-                  <div className="text-red-400 text-xs font-semibold uppercase tracking-wide">
+                  <div className="text-red-400 text-xs font-normal uppercase tracking-wide">
                     High Priority ({anomalies.high.length})
                   </div>
                 </div>
@@ -1359,7 +1360,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                     {anomalies.high.map((anomaly) => (
                       <motion.div
                         key={anomaly.id}
-                        className="bg-red-500/10 border border-red-500/20 rounded-md p-2 hover:bg-red-500/15 transition-colors cursor-pointer"
+                        className="bg-red-500/10 border border-red-500/20 rounded-md p-2 transition-colors cursor-pointer"
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.2 }}
@@ -1389,13 +1390,13 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             <div className="space-y-2">
               <motion.button
                 onClick={() => toggleSection('medium')}
-                className="w-full flex items-center justify-between p-2 rounded-md hover:bg-white/5 transition-colors"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                className="w-full flex items-center justify-between p-2 rounded-md transition-colors"
+                
+                
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 rounded-full bg-amber-400/80"></div>
-                  <div className="text-amber-400 text-xs font-semibold uppercase tracking-wide">
+                  <div className="text-amber-400 text-xs font-normal uppercase tracking-wide">
                     Medium Priority ({anomalies.medium.length})
                   </div>
                 </div>
@@ -1453,13 +1454,13 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             <div className="space-y-2">
               <motion.button
                 onClick={() => toggleSection('low')}
-                className="w-full flex items-center justify-between p-2 rounded-md hover:bg-white/5 transition-colors"
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                className="w-full flex items-center justify-between p-2 rounded-md transition-colors"
+                
+                
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 rounded-full bg-blue-400/80"></div>
-                  <div className="text-blue-400 text-xs font-semibold uppercase tracking-wide">
+                  <div className="text-blue-400 text-xs font-normal uppercase tracking-wide">
                     Low Priority (12)
                   </div>
                 </div>
@@ -1535,7 +1536,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
 
           {/* Opportunities Widget */}
           <motion.div 
-            className="rounded-lg p-3 sm:p-4 h-1/2 overflow-hidden"
+            className="rounded-lg p-3 sm:p-4 flex-1 min-h-0 overflow-auto max-h-[calc(50vh-32px)]"
           style={{
             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
             backdropFilter: 'blur(24px) saturate(1.1)',
@@ -1556,7 +1557,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                   <div className="text-purple-400 text-sm">💡</div>
                 </div>
                 <div>
-                  <div className="text-white/90 text-xs xs:text-sm sm:text-sm font-semibold">Opportunities</div>
+                  <div className="text-white/90 text-xs xs:text-sm sm:text-sm font-normal">Opportunities</div>
                   <div className="text-white/50 text-[10px] xs:text-xs sm:text-xs">AI-generated insights</div>
                 </div>
               </div>
@@ -1587,7 +1588,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
               {/* Opportunity Title */}
               <div className="space-y-2">
                 <motion.div 
-                  className="text-white/90 text-sm xs:text-base sm:text-lg md:text-xl font-semibold leading-tight"
+                  className="text-white/90 text-sm xs:text-xs sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base font-normal leading-tight"
                   key={`title-${currentOpportunity}`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1670,7 +1671,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                         Potential Impact
                       </motion.div>
                       <motion.div 
-                        className="text-emerald-400 text-sm font-semibold"
+                        className="text-emerald-400 text-sm font-normal"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.4, delay: 0.5 }}
@@ -1693,7 +1694,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                         Confidence
                       </motion.div>
                       <motion.div 
-                        className="text-purple-400 text-sm font-semibold"
+                        className="text-purple-400 text-sm font-normal"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.4, delay: 0.6 }}
@@ -1718,7 +1719,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
                       key={index}
                       onClick={() => setCurrentOpportunity(index)}
                       className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                        index === currentOpportunity ? 'bg-purple-400 scale-125' : 'bg-white/20 hover:bg-white/40'
+                        index === currentOpportunity ? 'bg-purple-400 ' : 'bg-white/20 '
                       }`}
                     />
                   ))}
@@ -1730,47 +1731,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
         </div>
       </div>
 
-      {/* Intelligence Modules Footer - 120px height */}
-      <motion.div 
-        className="h-30 bg-gradient-to-r from-slate-900/40 via-gray-800/30 to-slate-900/40 backdrop-blur-md border-t border-white/[0.02] p-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.8, ease: "easeOut" }}
-      >
-        <div className="flex space-x-4 overflow-x-auto">
-          {[
-            { name: "Risk Engine", status: "active", color: "emerald" },
-            { name: "Portfolio Analytics", status: "processing", color: "blue" },
-            { name: "Market Intelligence", status: "standby", color: "purple" },
-            { name: "Compliance Monitor", status: "active", color: "amber" },
-            { name: "Threat Detection", status: "processing", color: "rose" },
-            { name: "AI Assistant", status: "active", color: "cyan" }
-          ].map((module, index) => (
-            <motion.div
-              key={module.name}
-              className="flex-shrink-0 rounded-lg p-3 min-w-[140px]"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                backdropFilter: 'blur(24px) saturate(1.1)',
-                WebkitBackdropFilter: 'blur(24px) saturate(1.1)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.0 + index * 0.1, duration: 0.5, ease: "easeOut" }}
-            >
-              <div className="text-white/70 text-xs font-medium mb-1">{module.name}</div>
-              <div className={`text-[10px] font-semibold ${
-                module.status === 'active' ? 'text-emerald-400' :
-                module.status === 'processing' ? 'text-blue-400' : 'text-white/40'
-              }`}>
-                {module.status.toUpperCase()}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      {/* Intelligence Modules Footer will be rendered below */}
       
       {/* Functional Hover Overlay */}
       {hoveredWidget && (
@@ -1802,7 +1763,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             {/* Dynamic Content Based on Widget */}
             {hoveredWidget === 'revenue' && (
               <div className="space-y-3">
-                <div className="text-white/90 text-sm font-semibold mb-2">Revenue Breakdown</div>
+                <div className="text-white/90 text-sm font-normal mb-2">Revenue Breakdown</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span className="text-white/70">Recurring Revenue:</span>
@@ -1825,7 +1786,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             
             {hoveredWidget === 'churn' && (
               <div className="space-y-3">
-                <div className="text-white/90 text-sm font-semibold mb-2">Customer Health</div>
+                <div className="text-white/90 text-sm font-normal mb-2">Customer Health</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span className="text-white/70">At-Risk Customers:</span>
@@ -1848,7 +1809,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             
             {hoveredWidget === 'coordination' && (
               <div className="space-y-3">
-                <div className="text-white/90 text-sm font-semibold mb-2">Communication Hub</div>
+                <div className="text-white/90 text-sm font-normal mb-2">Communication Hub</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span className="text-white/70">Next Meeting:</span>
@@ -1871,7 +1832,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             
             {hoveredWidget === 'risk' && (
               <div className="space-y-3">
-                <div className="text-white/90 text-sm font-semibold mb-2">Security Status</div>
+                <div className="text-white/90 text-sm font-normal mb-2">Security Status</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span className="text-white/70">Active Threats:</span>
@@ -1894,7 +1855,7 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
             
             {hoveredWidget === 'performance' && (
               <div className="space-y-3">
-                <div className="text-white/90 text-sm font-semibold mb-2">System Performance</div>
+                <div className="text-white/90 text-sm font-normal mb-2">System Performance</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span className="text-white/70">Uptime SLA:</span>
@@ -1918,6 +1879,10 @@ const RiskillEnterpriseDashboardMinimalist: React.FC = () => {
         </motion.div>
       )}
       
+        {/* Intelligence Modules Footer - full width */}
+        <div className="w-full mt-4">
+          <Minimalist2Footer />
+        </div>
       </div>
     </motion.div>
   )
