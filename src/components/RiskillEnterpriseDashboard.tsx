@@ -2202,7 +2202,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
       </div>
       
       {/* Intelligence Modules Footer */}
-      <div className="fixed bottom-0 left-0 right-0 z-10">
+      <div className="fixed bottom-0 left-0 right-0 z-50">
         <Minimalist2Footer />
       </div>
     </motion.div>
