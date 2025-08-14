@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Optional dev hints (used by Netlify dev/preview tooling)
+[dev]
+  command = "npm run dev"
+  port = 3001
+  targetPort = 5173
+
+# Single Page App fallback for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -446,7 +446,10 @@ const RiskillEnterpriseDashboard: React.FC = () => {
     return () => {
       Object.values(intervals).forEach(interval => clearInterval(interval))
     }
-  }, [kpiAutoScrollPaused, revenueCards.length, kpiCardStacks])
+  // Important: Do NOT include `kpiCardStacks` in deps.
+  // It is defined as a new array each render; including it causes this effect
+  // to re-run on every render and set state, leading to an infinite update loop.
+  }, [kpiAutoScrollPaused, revenueCards.length])
 
   // Pause/Resume auto-scroll functions
   const pauseAutoScroll = (widgetId: string) => {
@@ -704,7 +707,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
 
   return (
     <motion.div 
-      className="w-full h-screen relative flex flex-col overflow-hidden"
+      className="w-full min-h-screen relative flex flex-col overflow-x-hidden overflow-y-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.2, ease: "easeOut" }}
@@ -765,7 +768,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
 
       {/* Top Metrics Zone - 144px height with extra clearance */}
       <motion.div 
-        className="h-36 bg-gradient-to-r from-slate-900/30 via-gray-800/20 to-slate-900/30 backdrop-blur-md border-b border-white/[0.02] flex items-center px-3"
+        className="h-auto min-h-28 sm:min-h-32 md:min-h-36 bg-gradient-to-r from-slate-900/30 via-gray-800/20 to-slate-900/30 backdrop-blur-md border-b border-white/[0.02] flex items-center px-3 py-2"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
@@ -780,7 +783,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
             items={kpiOrder}
             strategy={horizontalListSortingStrategy}
           >
-            <div className="flex-1 grid grid-cols-5 gap-3 px-1 h-full">
+            <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 px-1">
               {kpiOrder.map((widgetId, index) => {
                 // Map widget ID to KPI data
                 const kpi = widgetId === 'revenue' ? {
@@ -1167,10 +1170,10 @@ const RiskillEnterpriseDashboard: React.FC = () => {
       <div className="h-6" />
 
       {/* Main Content Grid - 3fr-6fr-3fr layout */}
-      <div className="flex-1 grid grid-cols-12 gap-4 p-4">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-4 p-4">
         {/* Left Panel - Adam AI Agent Widget (2 columns) */}
         <motion.div 
-          className="col-span-2 rounded-lg p-4 h-full overflow-hidden"
+          className="col-span-12 md:col-span-2 rounded-lg p-4 overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
             backdropFilter: 'blur(24px) saturate(1.1)',
@@ -1335,7 +1338,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
 
         {/* Center Panel - Strategy Narrative Center (7 columns) */}
         <motion.div 
-          className="col-span-7 rounded-lg p-6 h-full overflow-hidden cursor-pointer select-none"
+          className="col-span-12 md:col-span-7 rounded-lg p-6 overflow-hidden cursor-pointer select-none"
           style={{
             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
             backdropFilter: 'blur(24px) saturate(1.1)',
@@ -1526,7 +1529,7 @@ const RiskillEnterpriseDashboard: React.FC = () => {
 
         {/* Right Panel - Discovery Stack (3 columns) */}
         <motion.div 
-          className="col-span-3 rounded-lg p-4 h-full overflow-hidden space-y-6"
+          className="col-span-12 md:col-span-3 rounded-lg p-4 overflow-hidden space-y-6"
           style={{
             background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
             backdropFilter: 'blur(24px) saturate(1.1)',
